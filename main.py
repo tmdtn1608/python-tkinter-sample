@@ -72,6 +72,13 @@ class Kiosk(tk.Tk):
             '''
             self.current_screen.pack(fill="both", expand=True)
 
+            '''
+            클래스가 메서드를 가지고있는지 확인하려면
+            hasattr(클래스,"메서드명")
+            '''
+            if hasattr(screen, "update_price"): 
+                screen.update_price()
+
 # tkinter 실행
 if __name__ == "__main__":
     app = Kiosk()

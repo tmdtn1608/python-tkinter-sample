@@ -60,4 +60,6 @@ class Topping(tk.Frame):
                     self.controller.cart.add_topping(topping, entry)
             except ValueError:
                 pass  # 숫자가 아니면 무시
+        # 결제페이지를 들어가기 앞서 가격을 계산한다.
+        self.controller.cart.calculate_total()
         self.controller.show_screen(screen_pay)

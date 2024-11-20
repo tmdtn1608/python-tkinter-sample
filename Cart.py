@@ -37,6 +37,8 @@ class Cart:
         return self.data
     
     def calculate_total(self):
+        print("calculate_total")
+        print(self.data)
         total = 0
 
         category = self.data["category"]
@@ -54,6 +56,7 @@ class Cart:
                 total += menu["toppings"][topping] * count
 
         self.data["prices"] = total
+        return total
 
 
     def clear(self):

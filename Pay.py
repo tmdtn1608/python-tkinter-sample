@@ -18,10 +18,21 @@ class Pay(tk.Frame):
         self.card_password = tk.Entry(self, show="*")
         self.card_password.pack(pady=5)
 
-        total_price = self.controller.cart.calculate_total()
-        tk.Label(self, text=f"총 가격: {total_price}원", font=("Arial", 16), fg="blue").pack(pady=10)
+        self.price_label = tk.Label(self, font=("Arial", 16), fg="blue")
+        self.price_label.pack(pady=10)
 
-        tk.Button(self, text="결제 완료", command=self.complete_payment).pack(pady=20)
+        tk.Button(self, text="결제 완료", command=self.complete_payment).pack(pady=10)
+
+    """가격 동적으로 업데이트"""
+    '''
+    가격을 동적으로 표기하는 이유.
+    tk main에서 먼저 클래스를 생성했기 때문에, 생성시점에서의 가격이 화면에 그대로 고정된다.
+    따라서 계산결과를 다시 출력해주기 위해서는 화면 전환시 장바구니에서 가격을 가지고 설정해줘야 한다.
+    만약 화면 생성시점이 토핑을 다 고르고, 계산한 이후에 한다면 구현이 필요없을지도?
+    '''
+    def update_price(self):
+        price = self.controller.cart.data.get("prices", 0)
+        self.price_label.config(text=f"총 가격: {price}원")
 
     def complete_payment(self):
         card_number = self.card_number.get()
