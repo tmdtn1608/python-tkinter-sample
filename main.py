@@ -5,10 +5,10 @@ from Topping import Topping
 from Pay import Pay
 from Cart import Cart
 
-class MainApp(tk.Tk):
+class Kiosk(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("키오스크 프로그램")
+        self.title("키오스크")
         self.geometry("400x300")
         
         # 장바구니 인스턴스 생성
@@ -42,5 +42,5 @@ class MainApp(tk.Tk):
             self.current_screen.pack(fill="both", expand=True)
 
 if __name__ == "__main__":
-    app = MainApp()
+    app = Kiosk()
     app.mainloop()

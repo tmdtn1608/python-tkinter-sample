@@ -1,4 +1,5 @@
 import tkinter as tk
+from Const import icecream_flavor
 
 class Flavor(tk.Frame):
     def __init__(self, controller):
@@ -7,7 +8,7 @@ class Flavor(tk.Frame):
 
         tk.Label(self, text="맛 선택", font=("Arial", 20)).pack(pady=20)
         
-        for flavor in ["초코", "베리", "두부", "흑임자"]:
+        for flavor in icecream_flavor:
             tk.Button(
                 self,
                 text=flavor,
@@ -16,4 +17,4 @@ class Flavor(tk.Frame):
 
     def select_flavor(self, flavor):
         self.controller.cart.set_flavor(flavor)
-        self.controller.show_screen("Screen3")
+        self.controller.show_screen("Topping")

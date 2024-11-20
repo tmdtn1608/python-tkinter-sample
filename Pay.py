@@ -1,4 +1,5 @@
 import tkinter as tk
+import json
 
 class Pay(tk.Frame):
     def __init__(self, controller):
@@ -26,9 +27,19 @@ class Pay(tk.Frame):
         
         # 결제 완료 메시지
         tk.Label(self, text="결제가 완료되었습니다!", fg="green").pack()
-
+        
         # 장바구니 데이터 출력 (디버깅용)
-        print(self.controller.cart.get_cart())
+        cart_data = self.controller.cart.get_cart()
+        print(cart_data)
+        self.save_cart_json(cart_data)
 
         # 장바구니 초기화
         self.controller.cart.clear()
+
+    def save_cart_json(self, cart_data) :
+        try:
+            with open("cart_data.json", "w", encoding="utf-8") as json_file:
+                json.dump(cart_data, json_file, ensure_ascii=False, indent=4)
+            print("장바구니 데이터가 'cart_data.json' 파일로 저장되었습니다.")
+        except Exception as e:
+            print(f"장바구니 데이터를 저장하는 동안 오류가 발생했습니다: {e}")
