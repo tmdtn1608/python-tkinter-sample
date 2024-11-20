@@ -1,5 +1,5 @@
 import tkinter as tk
-from Const import icecream_flavor
+from Const import icecream_flavor,screen_topping
 
 class Flavor(tk.Frame):
     def __init__(self, controller):
@@ -17,4 +17,4 @@ class Flavor(tk.Frame):
 
     def select_flavor(self, flavor):
         self.controller.cart.set_flavor(flavor)
-        self.controller.show_screen("Topping")
+        self.controller.show_screen(screen_topping)

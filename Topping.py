@@ -1,54 +1,63 @@
 import tkinter as tk
-from Const import icecream_topping
+from Const import icecream_topping, screen_pay
 
 class Topping(tk.Frame):
     def __init__(self, controller):
         super().__init__(controller)
         self.controller = controller
 
+        # 화면 제목
         tk.Label(self, text="토핑 선택", font=("Arial", 20)).pack(pady=20)
 
-        self.toppings = {}
-        self.topping_cnt = {} # 갯수
-        self.topping_check = {} # 체크상태
-        
+        # 토핑 수량 입력 필드 저장
+        self.topping_cnt = {}
+
+        # 토핑 목록 생성
         for topping in icecream_topping:
-            # 토핑 체크박스와 숫자 입력 필드를 함께 배치
-            var = tk.IntVar(value=0)
-            self.topping_check[topping] = var
-
             frame = tk.Frame(self)
-            frame.pack(pady=5)
+            frame.pack(pady=5, padx=10, fill="x")
 
-            # 체크박스
-            checkbox = tk.Checkbutton(frame, text=topping, variable=var, command=lambda t=topping: self.toggle_topping(t))
-            checkbox.pack(side="left")
+            # 토핑 이름 레이블
+            tk.Label(frame, text=topping, font=("Arial", 12), width=10, anchor="w").pack(side="left", padx=5)
 
-            # 숫자 입력 필드 (기본값 0, 초기에는 비활성화)
-            entry = tk.Entry(frame, width=5)
-            entry.insert(0, "0")
-            entry.config(state="disabled")
+            # 수량 입력 Entry
+            entry = tk.Entry(frame, width=5, justify="center")
+            entry.insert(0, "0")  # 초기값 0
             entry.pack(side="left", padx=5)
+
+            # 값 변경 이벤트 등록
+            entry.bind("<FocusOut>", lambda event, t=topping: self.update_topping(t, event.widget))
+            entry.bind("<KeyRelease>", lambda event, t=topping: self.update_topping(t, event.widget))
+
+            # 입력 필드 저장
             self.topping_cnt[topping] = entry
 
-
+        # 다음 버튼
         tk.Button(self, text="다음", command=self.confirm_toppings).pack(pady=20)
 
-    def toggle_topping(self, topping):
-        entry = self.topping_cnt[topping]
-        # 체크상태 확인
-        if self.topping_check[topping].get() == 1:  # 체크박스가 선택된 경우
-            entry.config(state="normal")  # 텍스트박스 활성화
-        else:
-            entry.config(state="disabled")  # 텍스트박스 비활성화
-            entry.delete(0, "end")  # 텍스트박스 내용 삭제
-            entry.insert(0, "0")  # 텍스트박스 초기값 0
-            self.controller.cart.data["toppings"][topping] = 0  # 장바구니의 토핑 설정을 0으로 초기화
+    def update_topping(self, topping, widget):
+        """토핑 수량 검증 및 업데이트"""
+        value = widget.get()
+        try:
+            value = int(value)
+            if 0 <= value <= 99:  # 유효한 값
+                self.topping_cnt[topping] = value
+            else:  # 유효하지 않은 값은 초기화
+                self.reset_topping(widget)
+        except ValueError:  # 숫자가 아닌 값은 초기화
+            self.reset_topping(widget)
 
+    def reset_topping(self, widget):
+        """잘못된 입력을 초기화"""
+        widget.delete(0, tk.END)
+        widget.insert(0, "0")
 
     def confirm_toppings(self):
-        for topping, var in self.toppings.items():
-            count = int(self.topping_cnt[topping].get())  
-            if count > 0: 
-                self.controller.cart.add_topping(topping, count)
-        self.controller.show_screen("Pay")
+        """토핑 정보를 장바구니에 저장하고 다음 화면으로 이동"""
+        for topping, entry in self.topping_cnt.items():
+            try:
+                if isinstance(entry, int) and entry > 0 :
+                    self.controller.cart.add_topping(topping, entry)
+            except ValueError:
+                pass  # 숫자가 아니면 무시
+        self.controller.show_screen(screen_pay)
