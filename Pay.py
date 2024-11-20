@@ -18,6 +18,9 @@ class Pay(tk.Frame):
         self.card_password = tk.Entry(self, show="*")
         self.card_password.pack(pady=5)
 
+        total_price = self.controller.cart.calculate_total()
+        tk.Label(self, text=f"총 가격: {total_price}원", font=("Arial", 16), fg="blue").pack(pady=10)
+
         tk.Button(self, text="결제 완료", command=self.complete_payment).pack(pady=20)
 
     def complete_payment(self):

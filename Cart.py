@@ -1,3 +1,5 @@
+from Const import menu
+
 class Cart:
     def __init__(self):
         # 초기 장바구니 데이터 구조
@@ -6,7 +8,8 @@ class Cart:
             "flavor": "",
             "toppings": {},  # 토핑과 개수
             "card_number": "",
-            "card_password": ""
+            "card_password": "",
+            "prices": 0
         }
 
     def set_category(self, category):
@@ -32,6 +35,26 @@ class Cart:
     def get_cart(self):
         """전체 장바구니 데이터 반환"""
         return self.data
+    
+    def calculate_total(self):
+        total = 0
+
+        category = self.data["category"]
+        if category in menu["category"]:
+            total += menu["category"][category]
+
+        # 맛 가격
+        flavor = self.data["flavor"]
+        if flavor in menu["flavor"]:
+            total += menu["flavor"][flavor]
+
+        # 토핑 가격
+        for topping, count in self.data["toppings"].items():
+            if topping in menu["toppings"]:
+                total += menu["toppings"][topping] * count
+
+        self.data["prices"] = total
+
 
     def clear(self):
         """장바구니 초기화"""

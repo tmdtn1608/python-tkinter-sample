@@ -57,7 +57,10 @@ class Kiosk(tk.Tk):
         # 현재 내 화면은
         if self.current_screen:
             # 감추고,(pack()으로 표시한 요소)
+            # windows에서는 
             self.current_screen.pack_forget()
+            # macOS에서는
+            # self.current_screen.destroy()
         # 파라미터로 받은 값을 설정했던 화면중에 찾아서
         screen = self.screens.get(name)
         if screen:
