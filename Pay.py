@@ -15,6 +15,7 @@ class Pay(tk.Frame):
 
         # 카드 비밀번호
         tk.Label(self, text="카드 비밀번호 입력").pack(pady=5)
+        # show는 입력칸에 보이는 문자방식
         self.card_password = tk.Entry(self, show="*")
         self.card_password.pack(pady=5)
 
@@ -54,6 +55,6 @@ class Pay(tk.Frame):
         try:
             with open("cart_data.json", "w", encoding="utf-8") as json_file:
                 json.dump(cart_data, json_file, ensure_ascii=False, indent=4)
-            print("장바구니 데이터가 'cart_data.json' 파일로 저장되었습니다.")
+            print("장바구니 데이터가 저장되었습니다.")
         except Exception as e:
             print(f"장바구니 데이터를 저장하는 동안 오류가 발생했습니다: {e}")
