@@ -25,7 +25,7 @@ class Kiosk(tk.Tk):
         super().__init__()
         # Window 설정
         self.title("키오스크")
-        self.geometry("400x300")
+        self.geometry("400x320")
         
         # 장바구니 인스턴스 생성, 나중에 공통적으로 사용하게 된다.
         self.cart = Cart()
